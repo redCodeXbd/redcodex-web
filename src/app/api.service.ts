@@ -6,7 +6,7 @@ import { apiUrl } from './config';
 export interface Plan { id: string; key: string; name: string; description: string; priceMonthly: number; priceYearly: number; modules: string[] }
 export interface DemoForm { name: string; company: string; email: string; phone: string; message: string; role: string; industry: string; teamSize: string; interests: string[] }
 
-interface Gql<T> { data?: T; errors?: { message: string }[] }
+interface Gql<T> { data?: T; errors?: { message: string; extensions?: { fields?: { field: string; message: string }[] } }[] }
 
 /** The two public calls the landing page makes to the backend: the plans for the price table, and the demo request. */
 @Injectable({ providedIn: 'root' })
@@ -15,14 +15,17 @@ export class ApiService {
 
   private async gql<T>(query: string, variables?: object): Promise<T> {
     const r = await firstValueFrom(this.http.post<Gql<T>>(apiUrl(), { query, variables }));
-    if (r.errors?.length || !r.data) { throw new Error(r.errors?.[0]?.message ?? 'The server did not answer.'); }
+    if (r.errors?.length || !r.data) {
+      const e = r.errors?.[0]; const f = e?.extensions?.fields?.[0];
+      throw new Error(f ? `${f.field}: ${f.message}` : e?.message ?? 'The server did not answer.');
+    }
     return r.data;
   }
 
   async plans(): Promise<Plan[]> {
-    const r = await this.gql<{ plans: (Plan & { limits: Record<string, unknown> })[] }>('{ plans { id key name description priceMonthly priceYearly modules limits } }');
+    const r = await this.gql<{ publicPlans: (Plan & { limits: Record<string, unknown> })[] }>('{ publicPlans { id key name description priceMonthly priceYearly modules limits } }');
     // Plans made for one customer are not for sale on the public page.
-    return r.plans.filter((p) => !(p.limits['ui'] as { customFor?: string } | undefined)?.customFor).map((p) => ({ ...p, priceMonthly: Number(p.priceMonthly), priceYearly: Number(p.priceYearly) }));
+    return r.publicPlans.filter((p) => !(p.limits['ui'] as { customFor?: string } | undefined)?.customFor).map((p) => ({ ...p, priceMonthly: Number(p.priceMonthly), priceYearly: Number(p.priceYearly) }));
   }
 
   async submitDemo(f: DemoForm): Promise<{ number: string }> {
