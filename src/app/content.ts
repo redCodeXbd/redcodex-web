@@ -1,4 +1,4 @@
-import { LucideIconData, LayoutGrid, Sparkles, Ticket, Code, Building2, Banknote, Receipt, Briefcase, Archive, Clock, Wallet, Users, BarChart3, MessageSquare, Zap, Camera, Mic, ShieldCheck, SlidersHorizontal } from 'lucide-angular';
+import { LucideIconData, Globe, Smartphone, CalendarCheck, Store, PieChart, Plug, Info, MapPin, Languages, HeartHandshake, Layers, LayoutGrid, Sparkles, Ticket, Code, Building2, Banknote, Receipt, Briefcase, Archive, Clock, Wallet, Users, BarChart3, MessageSquare, Zap, Camera, Mic, ShieldCheck, SlidersHorizontal } from 'lucide-angular';
 
 export const SITE = {
   phone: '+880 1806 419601',
@@ -10,16 +10,21 @@ export const SITE = {
 /** The top menu: two dropdowns and two plain links. */
 export interface MenuItem { label: string; text: string; href: string; icon: LucideIconData }
 export const MENU: { label: string; items: MenuItem[] }[] = [
-  { label: 'Products', items: [
-    { label: 'Red CodeX ERP', text: 'Money, projects, stock and people in one place', href: '#erp', icon: LayoutGrid },
-    { label: 'Electro AI', text: 'The assistant built into the ERP', href: '#electro', icon: Sparkles },
-    { label: 'HRMX', text: 'Employee records, attendance and payroll', href: 'https://hrmx.redcodex.net', icon: Users },
-    { label: 'Aen River Cruise', text: 'Tickets and restaurant for river cruises', href: 'https://aenrivercruise.com', icon: Ticket },
-  ] },
-  { label: 'Company', items: [
-    { label: 'Custom software', text: 'Built around the way you work', href: '#custom', icon: Code },
-    { label: 'Sister concerns', text: 'The family behind Red Codex', href: '#sisters', icon: Building2 },
-  ] },
+  {
+    label: 'Products', items: [
+      { label: 'ErpX', text: 'Money, projects, stock and people in one place', href: '#erp', icon: LayoutGrid },
+      { label: 'Electro AI', text: 'The assistant built into the ERP', href: '#electro', icon: Sparkles },
+      { label: 'HrmX', text: 'Employee records, attendance and payroll', href: 'https://hrmx.redcodex.net', icon: Users },
+      { label: 'Aen River Cruise', text: 'Tickets and restaurant for river cruises', href: 'https://aenrivercruise.com', icon: Ticket },
+    ]
+  },
+  {
+    label: 'Company', items: [
+      { label: 'About Us', text: 'Who we are and how we work', href: '#about', icon: Info },
+      { label: 'Custom software', text: 'Built around the way you work', href: '#custom', icon: Code },
+      { label: 'Sister concerns', text: 'The family behind Red Codex', href: '#sisters', icon: Building2 },
+    ]
+  },
 ];
 export const LINKS = [{ label: 'Pricing', href: '#pricing' }, { label: 'Contact', href: '#demo' }];
 
@@ -71,7 +76,15 @@ export const CHAT = [
   { me: false, text: 'Of course. “Dear Mr Rahman, I hope you are well. This is a gentle reminder that invoice 1042 is now due…”' },
 ];
 
-export const SERVICES = ['Web applications and portals', 'Mobile apps', 'Online booking and ticketing', 'Restaurant and shop systems', 'Dashboards and reports', 'Links to your other systems'];
+/** What we build to order: an icon, the kind of software, and one line on what it gives a business. */
+export const SERVICES = [
+  { i: Globe, t: 'Web applications and portals', d: 'Internal tools and customer portals that work in any browser.' },
+  { i: Smartphone, t: 'Mobile apps', d: 'Android and iPhone apps for your staff in the field or your customers.' },
+  { i: CalendarCheck, t: 'Online booking and ticketing', d: 'Seats, tables, trips or appointments, sold and paid for online.' },
+  { i: Store, t: 'Restaurant and shop systems', d: 'Orders, menus, counters and daily sales in one place.' },
+  { i: PieChart, t: 'Dashboards and reports', d: 'The numbers you check every morning, live and on one screen.' },
+  { i: Plug, t: 'Links to your other systems', d: 'Connect accounting, payment, SMS or the tools you already use.' },
+];
 export const STEPS = [
   { t: 'We listen', d: 'A call or visit to understand how you work today and what hurts.' },
   { t: 'Plan and quote', d: 'A clear scope, screens to look at, a timeline and a price before we start.' },
@@ -86,3 +99,23 @@ export const SISTERS = [
 
 export const INTERESTS = ['Red CodeX ERP demo', 'HRMX', 'Aen River Cruise', 'Custom software', 'Something else'];
 export const TEAM_SIZES = ['1 to 10', '11 to 50', '51 to 200', '201 to 500', 'More than 500'];
+
+/** Plan modules as people read them; an unknown id shows as written. */
+export const MODULE_LABELS: Record<string, string> = {
+  treasury: 'Treasury', expenses: 'Expenses', clients: 'Clients', vendors: 'Vendors', projects: 'Projects', store: 'Inventory', attendance: 'Attendance',
+  devices: 'Devices', payroll: 'Payroll and payslips', loans: 'Loans', requests: 'Requests', reports: 'Reports', idcards: 'ID cards', activity: 'Activity log',
+  exports: 'Download and share', portals: 'Client and vendor portals', scheduling: 'Shift, holiday and bonus setup', costing: 'Cost and profit figures',
+  idtemplates: 'ID card templates', emailtemplates: 'Email templates', webmail: 'Webmail', electro: 'Electro assistant',
+};
+
+export const ABOUT_VALUES = [
+  { t: 'Built here, for here', d: 'We work from Dhaka with businesses in Bangladesh, so the software speaks Bangla, counts in Taka and follows how approvals really happen.' },
+  { t: 'Small steps, real software', d: 'We show working screens early and often. You steer while we build, so there are no surprises at the end.' },
+  { t: 'We stay after launch', d: 'The people who build your software are the people who support it, train your team and keep improving it.' },
+];
+export const ABOUT_FACTS = [
+  { i: MapPin, t: 'Dhaka, Bangladesh', d: 'Mohakhali DOHS office' },
+  { i: Layers, t: 'Ready-made and custom', d: 'ERP, HRMX, Aen River Cruise and more' },
+  { i: Languages, t: 'English and Bangla', d: 'In every screen we ship' },
+  { i: HeartHandshake, t: 'One family', d: 'With Encore Engineering and Redwan Engineering' },
+];

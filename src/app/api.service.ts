@@ -8,12 +8,15 @@ export interface DemoForm { name: string; company: string; email: string; phone:
 
 interface Gql<T> { data?: T; errors?: { message: string; extensions?: { fields?: { field: string; message: string }[] } }[] }
 
-/** The two public calls the landing page makes to the backend: the plans for the price table, and the demo request. */
+/**
+ * Every call the website makes to the ERP backend. All of them are public (no sign-in): the plans, the editable site content,
+ * the marketing tools and events, the Bangla corrections, and the demo request.
+ */
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private http = inject(HttpClient);
 
-  private async gql<T>(query: string, variables?: object): Promise<T> {
+  async gql<T>(query: string, variables?: object): Promise<T> {
     const r = await firstValueFrom(this.http.post<Gql<T>>(apiUrl(), { query, variables }));
     if (r.errors?.length || !r.data) {
       const e = r.errors?.[0]; const f = e?.extensions?.fields?.[0];
@@ -28,11 +31,26 @@ export class ApiService {
     return r.publicPlans.filter((p) => !(p.limits['ui'] as { customFor?: string } | undefined)?.customFor).map((p) => ({ ...p, priceMonthly: Number(p.priceMonthly), priceYearly: Number(p.priceYearly) }));
   }
 
-  async submitDemo(f: DemoForm): Promise<{ number: string }> {
-    const { role, industry, teamSize, interests, ...contact } = f;
+  async siteContent(): Promise<{ key: string; value: Record<string, unknown> }[]> {
+    return (await this.gql<{ siteContent: { key: string; value: Record<string, unknown> }[] }>('{ siteContent { key value } }')).siteContent;
+  }
+
+  async marketingConfig(): Promise<Record<string, unknown>> {
+    return (await this.gql<{ marketingConfig: Record<string, unknown> }>('{ marketingConfig }')).marketingConfig ?? {};
+  }
+
+  async trackEvent(event: object): Promise<void> {
+    await this.gql('mutation($e: JSON!) { trackMarketingEvent(event: $e) }', { e: event });
+  }
+
+  async translationOverrides(): Promise<Record<string, string>> {
+    return (await this.gql<{ translationOverrides: Record<string, string> }>('{ translationOverrides }')).translationOverrides ?? {};
+  }
+
+  async submitDemo(f: DemoForm, attribution: object | null): Promise<{ number: string }> {
     const r = await this.gql<{ submitDemoRequest: { number: string } }>(
       'mutation($i: DemoRequestInput!) { submitDemoRequest(input: $i) { id number } }',
-      { i: { ...contact, name: f.name.trim(), company: f.company.trim(), email: f.email.trim().toLowerCase(), phone: f.phone.trim(), message: f.message.trim(), data: { role, industry, teamSize, interests, attribution: { source: 'web', landing: location.href, referrer: document.referrer } } } },
+      { i: { name: f.name.trim(), company: f.company.trim(), email: f.email.trim().toLowerCase(), phone: f.phone.trim(), message: f.message.trim(), data: { role: f.role, industry: f.industry.trim(), teamSize: f.teamSize, interests: f.interests, attribution } } },
     );
     return r.submitDemoRequest;
   }

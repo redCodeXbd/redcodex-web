@@ -1,4 +1,5 @@
-import { effect, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
+import { ApiService } from '../api.service';
 import { DomTranslator } from './dom-translator';
 
 export type Lang = 'en' | 'bn';
@@ -17,6 +18,7 @@ const KEY = 'rcx.lang';
 export class I18nService {
   readonly lang = signal<Lang>(this.initial());
   private dom = new DomTranslator();
+  private api = inject(ApiService);
   private loaded = false;
 
   constructor() {
@@ -30,7 +32,8 @@ export class I18nService {
 
   private async apply(l: Lang): Promise<void> {
     if (l === 'en') { this.dom.stop(); return; }
-    if (!this.loaded) { this.dom.setDictionary((await import('./bn')).BN); this.loaded = true; }
+    // The Bangla corrections made on the ERP's Translations page win over the built-in text.
+    if (!this.loaded) { const [{ BN }, fixes] = await Promise.all([import('./bn'), this.api.translationOverrides().catch(() => ({}))]); this.dom.setDictionary({ ...BN, ...fixes }); this.loaded = true; }
     if (this.lang() === 'bn') { this.dom.start(); }
   }
 

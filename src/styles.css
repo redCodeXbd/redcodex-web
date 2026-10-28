@@ -3,23 +3,48 @@
 @tailwind utilities;
 
 html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
-body { @apply bg-white font-sans text-ink antialiased; }
-h1, h2, h3 { @apply tracking-tight; }
+body { @apply bg-white font-sans text-ink antialiased; font-feature-settings: 'cv11', 'ss01'; }
+h1, h2, h3 { @apply tracking-tight; text-wrap: balance; }
+p { text-wrap: pretty; }
+::selection { @apply bg-brand text-white; }
+:focus-visible { @apply outline-none ring-2 ring-brand/60 ring-offset-2; }
 
 @layer components {
-  .btn { @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-6 py-3 text-sm font-medium transition; }
+  .wrap { @apply mx-auto max-w-6xl px-5 sm:px-8; }
+  .section { @apply py-24 lg:py-36; }
+  .eyebrow { @apply inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-slate-500; }
+  .eyebrow::before { content: ''; @apply h-1.5 w-1.5 rounded-full bg-brand; }
+  .h2 { @apply mt-5 text-3xl font-semibold leading-[1.1] sm:text-[2.75rem]; }
+  .lead { @apply mt-5 max-w-xl text-lg leading-relaxed text-slate-500; }
+  .btn { @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-6 py-3 text-sm font-medium transition duration-200 active:scale-[0.98]; }
   .btn-red { @apply bg-brand text-white hover:bg-brand-dark; }
-  .btn-line { @apply text-ink ring-1 ring-black/15 hover:bg-soft; }
-  .eyebrow { @apply text-xs font-medium uppercase tracking-[0.14em] text-brand; }
-  .card { @apply rounded-2xl bg-white ring-1 ring-black/10; }
-  .input { @apply mt-1 h-11 w-full rounded-lg border border-black/15 bg-white px-3 text-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20; }
+  .btn-line { @apply text-ink ring-1 ring-inset ring-black/15 hover:bg-soft hover:ring-black/25; }
+  .btn .arrow { @apply transition-transform duration-200; }
+  .btn:hover .arrow, .link:hover .arrow { @apply translate-x-0.5; }
+  .link { @apply inline-flex items-center gap-1.5 text-sm font-medium text-ink transition hover:text-brand; }
+  /* An outside ring: children that reach the edge (a screenshot, a grid cell) cannot paint over it, so rounded corners stay whole. */
+  .hairline { @apply ring-1 ring-black/[0.07]; }
+  .field { @apply mt-1.5 h-11 w-full rounded-xl bg-soft px-3.5 text-sm outline-none ring-1 ring-inset ring-black/[0.06] transition placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-brand/50; }
+  .field.bad { @apply ring-2 ring-red-400/70; }
+  .chip { @apply rounded-full px-3.5 py-1.5 text-sm transition ring-1 ring-inset ring-black/10 hover:ring-black/25; }
+  .chip.on { @apply bg-ink text-white ring-ink; }
 }
 
-/* Scroll reveal, see the reveal directive. */
-.rv { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+/* Scroll reveal (see RevealDirective). */
+.rv { opacity: 0; transform: translateY(16px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
 .rv-in { opacity: 1; transform: none; }
 @keyframes marquee { to { transform: translateX(-50%); } }
-.marquee { animation: marquee 40s linear infinite; }
+.marquee { animation: marquee 50s linear infinite; }
+.marquee-mask { mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
 @keyframes fill { from { width: 0; } to { width: 100%; } }
 .fill { animation: fill 5.5s linear forwards; }
-@media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; transition: none; } .marquee, .fill { animation: none; } html { scroll-behavior: auto; } }
+@keyframes pop { from { opacity: 0; transform: translateY(-4px) scale(.98); } to { opacity: 1; transform: none; } }
+.pop { animation: pop .18s ease-out; transform-origin: top left; }
+@keyframes msg { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.rv-in .msg { animation: msg .5s ease both; }
+.rv:not(.rv-in) .msg { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rv, .rv:not(.rv-in) .msg { opacity: 1; transform: none; transition: none; }
+  .marquee, .fill, .pop, .rv-in .msg { animation: none; }
+}

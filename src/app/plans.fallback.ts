@@ -1,0 +1,9 @@
+import { Plan } from './api.service';
+
+/** The public plans as they were on 2026-10-28, shown until the live ones load (or when the backend cannot be reached). */
+export const FALLBACK_PLANS: Plan[] = [
+  {"id": "af208bac-fc27-493b-83a8-7fa175023cca", "key": "starter", "name": "Starter", "description": "For a small team that starts with money and projects", "priceMonthly": 2500.0, "priceYearly": 25000.0, "modules": ["treasury", "expenses", "clients", "vendors", "projects", "requests", "reports", "exports", "idcards", "webmail"]},
+  {"id": "a446e95d-8508-408f-ba54-8d1de5ba6cf3", "key": "business", "name": "Business", "description": "For a growing company with stock, attendance and payroll", "priceMonthly": 9000.0, "priceYearly": 90000.0, "modules": ["treasury", "expenses", "clients", "vendors", "projects", "store", "attendance", "payroll", "loans", "requests", "reports", "exports", "portals", "scheduling", "costing", "idcards", "activity", "idtemplates", "emailtemplates", "webmail", "electro"]},
+  {"id": "13b16025-0c8a-4a69-ae31-94804bb0ee5c", "key": "hrmx", "name": "HRMX", "description": "People only: attendance, payroll, employee loans and ID cards, with no accounts", "priceMonthly": 3500.0, "priceYearly": 35000.0, "modules": ["attendance", "devices", "payroll", "loans", "requests", "reports", "scheduling", "idcards", "idtemplates", "activity", "webmail", "electro"]},
+  {"id": "d0df9d59-dc9f-44ac-985f-649d088bcc22", "key": "enterprise", "name": "Enterprise", "description": "Everything, without limits", "priceMonthly": 25000.0, "priceYearly": 250000.0, "modules": ["treasury", "expenses", "clients", "vendors", "projects", "store", "attendance", "devices", "payroll", "loans", "requests", "reports", "exports", "portals", "scheduling", "costing", "idcards", "activity", "idtemplates", "emailtemplates", "webmail", "electro"]},
+];

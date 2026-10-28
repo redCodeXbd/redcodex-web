@@ -1,26 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ArrowUpRight, LucideAngularModule } from 'lucide-angular';
 import { RevealDirective } from '../reveal.directive';
-import { SISTERS } from '../content';
+import { SiteService } from '../site.service';
 
 @Component({
   selector: 'rcx-sisters',
   standalone: true,
-  imports: [RevealDirective],
+  imports: [LucideAngularModule, RevealDirective],
   template: `
-    <section id="sisters" class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-32" aria-label="Sister concerns">
-      <div rv class="mx-auto max-w-2xl text-center"><span class="eyebrow">Sister concerns</span><h2 class="mt-3 text-3xl font-semibold sm:text-4xl">The family behind Red Codex</h2></div>
-      <div class="mx-auto mt-12 grid max-w-4xl gap-6 sm:grid-cols-2">
-        @for (s of sisters; track s.name) {
-          <article rv class="card flex flex-col p-7 transition hover:-translate-y-0.5 hover:ring-brand/40">
-            <div class="flex h-20 items-center"><img [src]="s.logo" [alt]="s.name" class="max-h-full max-w-[10rem] object-contain" loading="lazy" /></div>
-            <h3 class="mt-4 text-xl font-semibold">{{ s.name }}</h3>
-            <p class="text-sm font-medium text-brand">{{ s.tagline }}</p>
-            <p class="mt-3 text-sm text-slate-600">{{ s.blurb }}</p>
-            <a [href]="s.url" [attr.target]="s.url.startsWith('http') ? '_blank' : null" rel="noopener" class="btn btn-line mt-auto">{{ s.cta }}</a>
-          </article>
-        }
+    <section id="sisters" class="section" aria-label="Sister concerns">
+      <div class="wrap">
+        <div rv class="max-w-xl"><span class="eyebrow">Sister concerns</span><h2 class="h2">The family behind Red Codex</h2></div>
+        <div class="mt-12 grid gap-4 md:grid-cols-2">
+          @for (s of site.content().sisters; track s.id; let i = $index) {
+            <a rv [rv]="i" [href]="link(s.url)" [attr.target]="s.url.startsWith('http') ? '_blank' : null" rel="noopener" class="group flex items-center gap-6 rounded-3xl p-6 hairline transition duration-300 hover:-translate-y-0.5 hover:ring-black/[0.14] sm:p-7">
+              <span class="flex h-20 w-24 flex-none items-center justify-center rounded-2xl bg-soft p-3"><img [src]="s.logo" [alt]="s.name" class="max-h-full max-w-full object-contain" loading="lazy" /></span>
+              <span class="min-w-0 flex-1">
+                <span class="block font-semibold">{{ s.name }}</span>
+                <span class="mt-0.5 block text-xs text-slate-400">{{ s.tagline }}</span>
+                <span class="mt-2 block text-sm leading-relaxed text-slate-500">{{ s.blurb }}</span>
+              </span>
+              <lucide-icon [img]="Out" [size]="18" class="flex-none self-start text-slate-300 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand" />
+            </a>
+          }
+        </div>
       </div>
     </section>
   `,
 })
-export class SistersComponent { readonly sisters = SISTERS; }
+export class SistersComponent {
+  readonly site = inject(SiteService); readonly Out = ArrowUpRight;
+  /** The ERP app's old website called its contact section #contact; here it is #demo. */
+  link = (url: string): string => (!url || url === '#contact' ? '#demo' : url);
+}
