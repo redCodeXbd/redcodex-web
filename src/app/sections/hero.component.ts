@@ -47,14 +47,14 @@ import { AUDIENCE, SLIDES } from '../content';
           </div>
 
           <div class="mt-6 flex items-baseline justify-between gap-4" aria-live="polite">
-            <div class="min-w-0"><span class="font-medium">{{ slide().title }}</span><span class="text-slate-400"> · </span><span class="text-sm text-slate-500">{{ slide().text }}</span></div>
+            <div class="min-w-0"><span class="mr-2 inline-block rounded-full bg-brand px-2 py-0.5 align-middle text-[11px] font-medium text-white sm:hidden">{{ slide().role }}</span><span class="font-medium">{{ slide().title }}</span><span class="text-slate-400"> · </span><span class="text-sm text-slate-500">{{ slide().text }}</span></div>
             <span class="flex-none text-xs tabular-nums text-slate-400" data-no-i18n>{{ idx() + 1 }} / {{ slides.length }}</span>
           </div>
-          <div class="mt-4 flex gap-1 overflow-x-auto" role="tablist" aria-label="Choose a user">
+          <div class="mt-3 flex gap-1" role="tablist" aria-label="Choose a user">
             @for (s of slides; track s.id; let i = $index) {
-              <button type="button" role="tab" [attr.aria-selected]="i === idx()" class="group/t flex-1 pt-2 text-left" (click)="idx.set(i)">
+              <button type="button" role="tab" [attr.aria-selected]="i === idx()" class="group/t min-w-0 flex-1 py-2 text-left" [attr.aria-label]="s.role" (click)="idx.set(i)">
                 <span class="block h-0.5 overflow-hidden rounded-full bg-black/[0.07]"><span class="block h-full bg-brand" [class.fill]="i === idx() && !paused()" [style.width.%]="i < idx() || (i === idx() && paused()) ? 100 : 0"></span></span>
-                <span class="mt-2 block whitespace-nowrap pr-2 text-xs transition" [class]="i === idx() ? 'text-ink font-medium' : 'text-slate-400 group-hover/t:text-slate-600'">{{ s.role }}</span>
+                <span class="mt-2 hidden truncate pr-2 text-xs transition sm:block" [class]="i === idx() ? 'text-ink font-medium' : 'text-slate-400 group-hover/t:text-slate-600'">{{ s.role }}</span>
               </button>
             }
           </div>

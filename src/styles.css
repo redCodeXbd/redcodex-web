@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
-body { @apply bg-white font-sans text-ink antialiased; font-feature-settings: 'cv11', 'ss01'; }
+body { @apply overflow-x-hidden bg-white font-sans text-ink antialiased; font-feature-settings: 'cv11', 'ss01'; }
 h1, h2, h3 { @apply tracking-tight; text-wrap: balance; }
 p { text-wrap: pretty; }
 ::selection { @apply bg-brand text-white; }

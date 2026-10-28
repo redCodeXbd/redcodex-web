@@ -11,7 +11,7 @@ import { I18nService, LANGUAGES } from './i18n.service';
         <span class="pointer-events-none absolute inset-y-0.5 left-0.5 w-[calc((100%-4px)/2)] rounded-full bg-brand transition-transform duration-300 ease-out motion-reduce:transition-none"
               [class]="i18n.lang() === 'bn' ? 'translate-x-full' : 'translate-x-0'" aria-hidden="true"></span>
       @for (l of languages; track l.id) {
-        <button type="button" class="relative z-10 min-w-[2.75rem] rounded-full px-3 py-1.5 text-xs font-semibold transition-colors"
+        <button type="button" class="relative z-10 min-w-[2.25rem] rounded-full px-2 py-1.5 sm:min-w-[2.75rem] sm:px-3 text-xs font-semibold transition-colors"
                 [class]="i18n.lang() === l.id ? 'text-white' : 'text-slate-600 hover:text-ink'"
                 [attr.aria-pressed]="i18n.lang() === l.id" [attr.lang]="l.id" [attr.title]="l.label" (click)="i18n.set(l.id)">{{ l.short }}</button>
       }

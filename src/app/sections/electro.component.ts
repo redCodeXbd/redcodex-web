@@ -9,7 +9,7 @@ import { AI_POINTS, CHAT } from '../content';
   standalone: true,
   imports: [LucideAngularModule, RevealDirective],
   template: `
-    <section id="electro" class="section" aria-label="Electro, the AI assistant">
+    <section id="electro" class="section overflow-hidden" aria-label="Electro, the AI assistant">
       <div class="wrap grid items-center gap-16 lg:grid-cols-2">
         <div rv>
           <span class="eyebrow">New · AI assistant</span>

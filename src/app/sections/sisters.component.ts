@@ -13,8 +13,8 @@ import { SiteService } from '../site.service';
         <div rv class="max-w-xl"><span class="eyebrow">Sister concerns</span><h2 class="h2">The family behind Red Codex</h2></div>
         <div class="mt-12 grid gap-4 md:grid-cols-2">
           @for (s of site.content().sisters; track s.id; let i = $index) {
-            <a rv [rv]="i" [href]="link(s.url)" [attr.target]="s.url.startsWith('http') ? '_blank' : null" rel="noopener" class="group flex items-center gap-6 rounded-3xl p-6 hairline transition duration-300 hover:-translate-y-0.5 hover:ring-black/[0.14] sm:p-7">
-              <span class="flex h-20 w-24 flex-none items-center justify-center rounded-2xl bg-soft p-3"><img [src]="s.logo" [alt]="s.name" class="max-h-full max-w-full object-contain" loading="lazy" /></span>
+            <a rv [rv]="i" [href]="link(s.url)" [attr.target]="s.url.startsWith('http') ? '_blank' : null" rel="noopener" class="group flex items-center gap-4 rounded-3xl p-5 hairline sm:gap-6 sm:p-6 transition duration-300 hover:-translate-y-0.5 hover:ring-black/[0.14] sm:p-7">
+              <span class="flex h-16 w-20 flex-none sm:h-20 sm:w-24 items-center justify-center rounded-2xl bg-soft p-3"><img [src]="s.logo" [alt]="s.name" class="max-h-full max-w-full object-contain" loading="lazy" /></span>
               <span class="min-w-0 flex-1">
                 <span class="block font-semibold">{{ s.name }}</span>
                 <span class="mt-0.5 block text-xs text-slate-400">{{ s.tagline }}</span>

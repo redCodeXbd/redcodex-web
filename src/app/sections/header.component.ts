@@ -12,8 +12,8 @@ import { LINKS, MENU } from '../content';
   imports: [LucideAngularModule, LanguageSwitchComponent],
   template: `
     <header class="sticky top-0 z-40 border-b transition-colors duration-300" [class]="scrolled() || mobile() ? 'border-black/[0.06] bg-white/80 backdrop-blur-xl backdrop-saturate-150' : 'border-transparent bg-white'">
-      <div class="wrap flex h-16 items-center justify-between gap-4">
-        <a href="#top" aria-label="Red Codex home" class="flex-none"><img [src]="site.content().brandLogo" alt="Red Codex" class="h-8 w-auto" /></a>
+      <div class="wrap flex h-16 items-center justify-between gap-3">
+        <a href="#top" aria-label="Red Codex home" class="flex-none"><img [src]="site.content().brandLogo" alt="Red Codex" class="h-6 w-auto min-[380px]:h-7 sm:h-8" /></a>
 
         <nav class="hidden items-center gap-1 text-sm text-slate-600 xl:flex" aria-label="Main">
           @for (g of menu; track g.label) {
@@ -38,11 +38,11 @@ import { LINKS, MENU } from '../content';
           @for (l of links; track l.label) { <a [href]="l.href" class="rounded-full px-3.5 py-2 transition hover:text-ink">{{ l.label }}</a> }
         </nav>
 
-        <div class="flex items-center gap-3 whitespace-nowrap sm:gap-4">
+        <div class="flex items-center gap-2 whitespace-nowrap sm:gap-4">
           <rcx-lang />
           <a [href]="app" data-sign-in class="hidden text-sm text-slate-600 transition hover:text-ink sm:inline">Sign in</a>
           <a href="#demo" class="btn btn-red hidden !py-2 sm:inline-flex">Request a demo</a>
-          <button type="button" class="flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-black/10 xl:hidden" [attr.aria-expanded]="mobile()" aria-label="Menu" (click)="mobile.set(!mobile())">
+          <button type="button" class="flex h-10 w-10 flex-none items-center justify-center rounded-full ring-1 ring-black/10 xl:hidden" [attr.aria-expanded]="mobile()" aria-label="Menu" (click)="mobile.set(!mobile())">
             <lucide-icon [img]="mobile() ? X : Menu" [size]="20" />
           </button>
         </div>
