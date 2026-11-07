@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, inject, OnDestroy } from '@angular/core';
 import { MarketingService } from './marketing/marketing.service';
 import { ConsentComponent } from './marketing/consent.component';
+import { AppsComponent } from './sections/apps.component';
 import { AboutComponent } from './sections/about.component';
 import { ClientsComponent } from './sections/clients.component';
 import { ContactComponent } from './sections/contact.component';
@@ -14,16 +15,16 @@ import { PricingComponent } from './sections/pricing.component';
 import { ProductsComponent } from './sections/products.component';
 import { SistersComponent } from './sections/sisters.component';
 
-const SECTIONS = ['products', 'erp', 'electro', 'pricing', 'custom', 'about', 'sisters', 'demo'];
+const SECTIONS = ['products', 'erp', 'apps', 'electro', 'pricing', 'custom', 'about', 'sisters', 'demo'];
 
 /** The page, plus what it reports to the backend: a page view, each section seen (once), and the clicks that matter. */
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AboutComponent, ClientsComponent, ConsentComponent, HeaderComponent, HeroComponent, ProductsComponent, ErpComponent, ElectroComponent, PricingComponent, CustomComponent, SistersComponent, ContactComponent, FooterComponent],
+  imports: [AppsComponent, AboutComponent, ClientsComponent, ConsentComponent, HeaderComponent, HeroComponent, ProductsComponent, ErpComponent, ElectroComponent, PricingComponent, CustomComponent, SistersComponent, ContactComponent, FooterComponent],
   template: `
     <rcx-header />
-    <main><rcx-hero /><rcx-clients /><rcx-products /><rcx-erp /><rcx-electro /><rcx-pricing /><rcx-custom /><rcx-about /><rcx-sisters /><rcx-contact /></main>
+    <main><rcx-hero /><rcx-clients /><rcx-products /><rcx-erp /><rcx-apps /><rcx-electro /><rcx-pricing /><rcx-custom /><rcx-about /><rcx-sisters /><rcx-contact /></main>
     <rcx-footer /><rcx-consent />
   `,
 })

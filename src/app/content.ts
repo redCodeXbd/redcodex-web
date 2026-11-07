@@ -26,7 +26,7 @@ export const MENU: { label: string; items: MenuItem[] }[] = [
     ]
   },
 ];
-export const LINKS = [{ label: 'Pricing', href: '#pricing' }, { label: 'Contact', href: '#demo' }];
+export const LINKS = [{ label: 'Apps', href: '#apps' }, { label: 'Pricing', href: '#pricing' }, { label: 'Contact', href: '#demo' }];
 
 export const SLIDES = [
   { id: 'admin', role: 'Admin', title: 'Company control room', text: 'Money, projects, people and approvals at a glance.' },
