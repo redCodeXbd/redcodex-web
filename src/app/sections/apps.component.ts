@@ -53,7 +53,7 @@ export class AppsComponent implements OnInit {
   readonly apps = signal<AppCard[]>([
     { id: 'erpx', name: 'Red CodeX ERP', text: 'The whole company in your pocket: your own dashboard, approvals, attendance and requests. Sign in with your ERP account; fingerprint unlock is built in.',
       manifest: 'https://redspace.sgp1.cdn.digitaloceanspaces.com/redcodex/erpx-mobile/update.json',
-      apk: 'https://sgp1.digitaloceanspaces.com/redspace/redcodex/erpx-mobile/redcodex-erp-9.apk', logo: 'images/redcodex/logo-square.png', version: '1.0.4', notes: '' },
+      apk: 'https://sgp1.digitaloceanspaces.com/redspace/redcodex/erpx-mobile/erpx-v1.0.5.apk', logo: 'images/redcodex/logo-square.png', version: '1.0.5', notes: '' },
     { id: 'hrmx-sync', name: 'HRMX Sync', text: 'Face attendance for the office and the field. Register people, verify a face and punch in or out, then sync with HrmX.',
       manifest: 'https://redspace.sgp1.cdn.digitaloceanspaces.com/aenrivercruise/production/hrmx-sync/update.json',
       apk: 'https://sgp1.digitaloceanspaces.com/redspace/aenrivercruise/production/hrmx-sync/hrmx-sync-109.apk', icon: ScanFace, version: '1.2.0', notes: '' },
@@ -62,13 +62,17 @@ export class AppsComponent implements OnInit {
   ngOnInit(): void { for (const a of this.apps()) { void this.refresh(a); } }
 
   private async refresh(a: AppCard): Promise<void> {
-    try {
-      const res = await fetch(`${a.manifest}?_=${Date.now()}`, { cache: 'no-store' });
-      if (!res.ok) { return; }
-      const m = (await res.json()) as Manifest;
-      // Only a download from the file host is trusted.
-      if (!m.apkUrl || !/^https:\/\/([\w-]+\.)*digitaloceanspaces\.com\//.test(m.apkUrl)) { return; }
-      this.apps.update((list) => list.map((x) => (x.id === a.id ? { ...x, apk: m.apkUrl!, version: m.versionName || x.version, notes: (m.notes || '').slice(0, 140) } : x)));
-    } catch { /* the built-in link stays */ }
+    // The website's own address first (a function reads the manifest on the server, so no CORS is needed), then the file host itself.
+    for (const url of [`api/app/${a.id}`, a.manifest]) {
+      try {
+        const res = await fetch(`${url}?_=${Date.now()}`, { cache: 'no-store' });
+        if (!res.ok) { continue; }
+        const m = (await res.json()) as Manifest;
+        // Only a download from the file host is trusted.
+        if (!m.apkUrl || !/^https:\/\/([\w-]+\.)*digitaloceanspaces\.com\//.test(m.apkUrl)) { continue; }
+        this.apps.update((list) => list.map((x) => (x.id === a.id ? { ...x, apk: m.apkUrl!, version: m.versionName || x.version, notes: (m.notes || '').slice(0, 140) } : x)));
+        return;
+      } catch { /* try the next one; the built-in link stays if none works */ }
+    }
   }
 }
